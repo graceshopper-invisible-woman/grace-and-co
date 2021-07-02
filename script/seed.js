@@ -1,6 +1,7 @@
 const {green, red} = require('chalk')
 const db = require('../server/db')
 const {Product, User, Order, OrderItem} = require('../server/db/models')
+const faker = require('faker')
 
 const seed = async () => {
   try {
@@ -961,6 +962,16 @@ const seed = async () => {
     ]
 
     const [U1, U2, U3, U4, U5, U6] = await User.bulkCreate(users)
+    await User.bulkCreate(
+      Array(1000)
+        .fill()
+        .map(user => ({
+          email: faker.internet.email(),
+          password: faker.internet.password(),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName()
+        }))
+    )
     console.log(green('Seeded users!'))
 
     //order seeding
